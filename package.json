@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "start:db": "docker-compose up",
     "lint:check": "next lint",
     "lint:fix": "next lint --fix",
     "format:check": "prettier --check",
