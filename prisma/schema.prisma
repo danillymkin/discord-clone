@@ -18,18 +18,18 @@ model Profile {
   email     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  servers    Server[]
+  servers   Server[]
 }
 
 model Server {
-  id         String  @id @default(uuid())
+  id         String   @id @default(uuid())
   name       String
-  imageUrl   String  @db.Text
-  inviteCode String  @db.Text
+  imageUrl   String   @db.Text
+  inviteCode String   @db.Text
   profileId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  profile    Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  profile    Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   @@index([profileId])
 }
