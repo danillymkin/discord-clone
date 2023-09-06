@@ -20,6 +20,7 @@ model Profile {
   updatedAt DateTime @updatedAt
   servers   Server[]
   members   Member[]
+  chanels   Chanel[]
 }
 
 model Server {
@@ -32,6 +33,7 @@ model Server {
   updatedAt  DateTime @updatedAt
   profile    Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
   members    Member[]
+  chanels    Chanel[]
 
   @@index([profileId])
 }
@@ -51,6 +53,27 @@ model Member {
   profile   Profile    @relation(fields: [profileId], references: [id], onDelete: Cascade)
   serverId  String
   server    Server     @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([serverId])
+}
+
+enum ChanelType {
+  TEXT
+  AUDIO
+  VIDEO
+}
+
+model Chanel {
+  id   String     @id @default(uuid())
+  name String
+  type ChanelType @default(TEXT)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  serverId String
+  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
   @@index([profileId])
   @@index([serverId])
