@@ -16,7 +16,7 @@ export const CreateServer = () => {
     <>
       <CreateServerButton onClick={onOpen} />
 
-      <CreateServerModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <CreateServerModal isOpen={isOpen} onClose={onClose} />
     </>
   )
 }
