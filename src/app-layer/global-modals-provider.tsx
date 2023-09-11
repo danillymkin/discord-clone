@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
+import { ConfigureServerModal } from '@/features/server/configure-server'
 import { InvitePeopleModal } from '@/features/server/invite-people'
 
 import {
@@ -49,6 +50,7 @@ export const GlobalModalsProvider = ({
       {children}
 
       <InvitePeopleModal />
+      <ConfigureServerModal />
     </GlobalModalsContext.Provider>
   )
 }

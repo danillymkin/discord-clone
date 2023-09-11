@@ -1,7 +1,7 @@
 import { Server } from '@prisma/client'
 import { createContext } from 'react'
 
-export type ModalType = 'createServer' | 'invite'
+export type ModalType = 'createServer' | 'invite' | 'editServer'
 
 export type ModalData = {
   server?: Server
@@ -19,7 +19,7 @@ export const initialGlobalModalsState: GlobalModalsContextType = {
   type: null,
   data: {},
   isOpen: false,
-  onOpen: (type) => {},
+  onOpen: () => {},
   onClose: () => {},
 }
 
