@@ -38,13 +38,11 @@ type FormSchema = z.infer<typeof formSchema>
 
 interface CreateServerModalProps {
   isOpen: boolean
-  onOpen: () => void
   onClose: () => void
 }
 
 export const CreateServerModal = ({
   isOpen,
-  onOpen,
   onClose,
 }: CreateServerModalProps) => {
   const router = useRouter()
