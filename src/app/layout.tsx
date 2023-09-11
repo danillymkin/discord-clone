@@ -2,6 +2,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import type { Metadata } from 'next'
 import { Open_Sans } from 'next/font/google'
 
+import { GlobalModalsProvider } from '@/app-layer/global-modals-provider'
 import { ThemeProvider } from '@/app-layer/theme-provider'
 
 import { cn } from '@/shared/lib/cn'
@@ -30,7 +31,7 @@ export default function RootLayout({
             storageKey="discord-theme"
             enableSystem={false}
           >
-            {children}
+            <GlobalModalsProvider>{children}</GlobalModalsProvider>
           </ThemeProvider>
         </body>
       </html>
