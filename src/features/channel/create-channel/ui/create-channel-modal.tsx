@@ -45,13 +45,11 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>
 
 export const CreateChannelModal = () => {
-  const { isOpen, onOpen, onClose, type, data } =
-    useContext(GlobalModalsContext)
+  const { isOpen, onClose, type } = useContext(GlobalModalsContext)
   const router = useRouter()
   const params = useParams()
 
   const isModalOpen = isOpen && type === 'createChannel'
-  const { server } = data
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -87,7 +85,7 @@ export const CreateChannelModal = () => {
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
