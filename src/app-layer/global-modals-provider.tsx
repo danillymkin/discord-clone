@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
+import { CreateChannelModal } from '@/features/channel/create-channel'
 import { ConfigureServerModal } from '@/features/server/configure-server'
 import { InvitePeopleModal } from '@/features/server/invite-people'
 import { ManageMembersModal } from '@/features/server/manage-members'
@@ -53,6 +54,7 @@ export const GlobalModalsProvider = ({
       <InvitePeopleModal />
       <ConfigureServerModal />
       <ManageMembersModal />
+      <CreateChannelModal />
     </GlobalModalsContext.Provider>
   )
 }
