@@ -7,8 +7,6 @@ import { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
-import { UploadFile } from '@/features/upload-file'
-
 import { GlobalModalsContext } from '@/shared/lib/context/global-modals-context'
 import { Button } from '@/shared/ui/button'
 import {
@@ -28,6 +26,7 @@ import {
   FormMessage,
 } from '@/shared/ui/form'
 import { Input } from '@/shared/ui/input'
+import { UploadFile } from '@/shared/ui/upload-file'
 
 const formSchema = z.object({
   name: z.string().min(1, {
