@@ -1,9 +1,13 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
+import { GlobalModalsContext } from '@/shared/lib/context/global-modals-context'
 import { Button } from '@/shared/ui/button'
 import {
   Dialog,
@@ -35,15 +39,8 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>
 
-interface CreateServerModalProps {
-  isOpen: boolean
-  onClose: () => void
-}
-
-export const CreateServerModal = ({
-  isOpen,
-  onClose,
-}: CreateServerModalProps) => {
+export const CreateServerModal = () => {
+  const { isOpen, onClose, type } = useContext(GlobalModalsContext)
   const router = useRouter()
 
   const form = useForm({
@@ -54,6 +51,7 @@ export const CreateServerModal = ({
     },
   })
 
+  const isModalOpen = isOpen && type === 'createServer'
   const isLoading = form.formState.isSubmitting
 
   const onSubmit = async (values: FormSchema) => {
@@ -74,7 +72,7 @@ export const CreateServerModal = ({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
