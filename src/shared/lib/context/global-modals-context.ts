@@ -7,6 +7,7 @@ export type ModalType =
   | 'editServer'
   | 'manageMembers'
   | 'createChannel'
+  | 'leaveServer'
 
 export type ModalData = {
   server?: Server
