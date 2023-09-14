@@ -1,7 +1,11 @@
 import { Server } from '@prisma/client'
 import { createContext } from 'react'
 
-export type ModalType = 'createServer' | 'invite' | 'editServer'
+export type ModalType =
+  | 'createServer'
+  | 'invite'
+  | 'editServer'
+  | 'manageMembers'
 
 export type ModalData = {
   server?: Server
