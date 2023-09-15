@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChanelType } from '@prisma/client'
-import { SelectContent, SelectValue } from '@radix-ui/react-select'
 import axios from 'axios'
 import { useParams, useRouter } from 'next/navigation'
 import qs from 'query-string'
@@ -28,7 +27,13 @@ import {
   FormMessage,
 } from '@/shared/ui/form'
 import { Input } from '@/shared/ui/input'
-import { Select, SelectItem, SelectTrigger } from '@/shared/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/shared/ui/select'
 
 const formSchema = z.object({
   name: z
