@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
@@ -39,9 +39,12 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>
 
-export const CreateServerModal = () => {
-  const { isOpen, onClose, type } = useContext(GlobalModalsContext)
+export const ConfigureServerModal = () => {
+  const { isOpen, onClose, type, data } = useContext(GlobalModalsContext)
   const router = useRouter()
+
+  const isModalOpen = isOpen && type === 'editServer'
+  const { server } = data
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -51,12 +54,18 @@ export const CreateServerModal = () => {
     },
   })
 
-  const isModalOpen = isOpen && type === 'createServer'
+  useEffect(() => {
+    if (server) {
+      form.setValue('name', server.name)
+      form.setValue('imageUrl', server.imageUrl)
+    }
+  }, [server, form, isOpen])
+
   const isLoading = form.formState.isSubmitting
 
   const onSubmit = async (values: FormSchema) => {
     try {
-      await axios.post('/api/servers', values)
+      await axios.patch(`/api/servers/${server?.id}`, values)
 
       form.reset()
       router.refresh()
@@ -76,7 +85,7 @@ export const CreateServerModal = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Create your server
+            Customize your server
           </DialogTitle>
 
           <DialogDescription className="text-center text-zinc-500">
@@ -132,7 +141,7 @@ export const CreateServerModal = () => {
 
             <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button variant={'primary'} disabled={isLoading}>
-                Create
+                Save
               </Button>
             </DialogFooter>
           </form>
