@@ -1,4 +1,4 @@
-import { ChanelType, Server } from '@prisma/client'
+import { Chanel, ChanelType, Server } from '@prisma/client'
 import { createContext } from 'react'
 
 export type ModalType =
@@ -9,9 +9,11 @@ export type ModalType =
   | 'createChannel'
   | 'leaveServer'
   | 'deleteServer'
+  | 'deleteChannel'
 
 export type ModalData = {
   server?: Server
+  channel?: Chanel
   channelType?: ChanelType
 }
 
