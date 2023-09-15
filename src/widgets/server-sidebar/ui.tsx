@@ -1,4 +1,5 @@
 import { ChanelType, MemberRole } from '@prisma/client'
+import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
 import { CreateChannelButton } from '@/features/channel/create-channel'
@@ -7,15 +8,31 @@ import { DeleteServerButton } from '@/features/server/delete-server'
 import { InvitePeopleButton } from '@/features/server/invite-people'
 import { LeaveServerButton } from '@/features/server/leave-server'
 import { ManageMembersButton } from '@/features/server/manage-members'
+import { ServerSearch } from '@/features/server/server-search'
 
 import { ServerHeader } from '@/entities/server'
 import { currentProfile } from '@/entities/user'
 
 import { db } from '@/shared/lib/database'
 import { DropdownMenuSeparator } from '@/shared/ui/dropdown-menu'
+import { ScrollArea } from '@/shared/ui/scroll-area'
 
 interface ServerSidebarProps {
   serverId: string
+}
+
+const channelIconMap = {
+  [ChanelType.TEXT]: <Hash className="mr-2 h-4 w-4" />,
+  [ChanelType.AUDIO]: <Mic className="mr-2 h-4 w-4" />,
+  [ChanelType.VIDEO]: <Video className="mr-2 h-4 w-4" />,
+}
+
+const roleIconMap = {
+  [MemberRole.GUEST]: null,
+  [MemberRole.MODERATOR]: (
+    <ShieldCheck className="h-4 w-4 mr-2 text-indigo-500" />
+  ),
+  [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4 mr-2 text-rose-500" />,
 }
 
 export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
@@ -48,13 +65,13 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
     return redirect('/')
   }
 
-  const textChanels = server.chanels.filter(
+  const textChannels = server.chanels.filter(
     (channel) => channel.type === ChanelType.TEXT
   )
-  const audioChanels = server.chanels.filter(
+  const audioChannels = server.chanels.filter(
     (channel) => channel.type === ChanelType.AUDIO
   )
-  const videoChanels = server.chanels.filter(
+  const videoChannels = server.chanels.filter(
     (channel) => channel.type === ChanelType.VIDEO
   )
 
@@ -82,6 +99,51 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
           !isAdmin && <LeaveServerButton server={server} />,
         ]}
       />
+
+      <ScrollArea className="flex-1 px-3">
+        <div className="mt-2">
+          <ServerSearch
+            data={[
+              {
+                label: 'Text Channels',
+                type: 'channel',
+                data: textChannels.map((channel) => ({
+                  id: channel.id,
+                  name: channel.name,
+                  icon: channelIconMap[channel.type],
+                })),
+              },
+              {
+                label: 'Voice Channels',
+                type: 'channel',
+                data: audioChannels.map((channel) => ({
+                  id: channel.id,
+                  name: channel.name,
+                  icon: channelIconMap[channel.type],
+                })),
+              },
+              {
+                label: 'Video Channels',
+                type: 'channel',
+                data: videoChannels.map((channel) => ({
+                  id: channel.id,
+                  name: channel.name,
+                  icon: channelIconMap[channel.type],
+                })),
+              },
+              {
+                label: 'Members',
+                type: 'member',
+                data: members.map((member) => ({
+                  id: member.id,
+                  name: member.profile.name,
+                  icon: roleIconMap[member.role],
+                })),
+              },
+            ]}
+          />
+        </div>
+      </ScrollArea>
     </div>
   )
 }
