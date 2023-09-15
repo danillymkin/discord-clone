@@ -1,4 +1,4 @@
-import { Server } from '@prisma/client'
+import { ChanelType, Server } from '@prisma/client'
 import { createContext } from 'react'
 
 export type ModalType =
@@ -12,6 +12,7 @@ export type ModalType =
 
 export type ModalData = {
   server?: Server
+  channelType?: ChanelType
 }
 
 interface GlobalModalsContextType {
