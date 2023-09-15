@@ -2,12 +2,12 @@ import { ChanelType, MemberRole } from '@prisma/client'
 import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
-import { CreateChannelButton } from '@/features/channel/create-channel'
+import { CreateChannelMenuItem } from '@/features/channel/create-channel'
 import { ConfigureServerButton } from '@/features/server/configure-server'
 import { DeleteServerButton } from '@/features/server/delete-server'
 import { InvitePeopleButton } from '@/features/server/invite-people'
 import { LeaveServerButton } from '@/features/server/leave-server'
-import { ManageMembersButton } from '@/features/server/manage-members'
+import { ManageMembersMenuItem } from '@/features/server/manage-members'
 import { ServerSearch } from '@/features/server/server-search'
 
 import { ServerHeader } from '@/entities/server'
@@ -92,8 +92,8 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
         actions={[
           isModerator && <InvitePeopleButton server={server} />,
           isAdmin && <ConfigureServerButton server={server} />,
-          isAdmin && <ManageMembersButton server={server} />,
-          isModerator && <CreateChannelButton server={server} />,
+          isAdmin && <ManageMembersMenuItem server={server} />,
+          isModerator && <CreateChannelMenuItem server={server} />,
           isModerator && <DropdownMenuSeparator />,
           isAdmin && <DeleteServerButton server={server} />,
           !isAdmin && <LeaveServerButton server={server} />,
