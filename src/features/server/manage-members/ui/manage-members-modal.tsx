@@ -8,7 +8,6 @@ import {
   Loader2,
   MoreVertical,
   Shield,
-  ShieldAlert,
   ShieldCheck,
   ShieldQuestion,
 } from 'lucide-react'
@@ -16,7 +15,7 @@ import { useRouter } from 'next/navigation'
 import qs from 'query-string'
 import { useContext, useState } from 'react'
 
-import { UserAvatar } from '@/entities/user/ui/user-avatar'
+import { UserAvatar, UserDetails } from '@/entities/user'
 
 import { GlobalModalsContext } from '@/shared/lib/context/global-modals-context'
 import { ServerWithMembersWithProfiles } from '@/shared/lib/types'
@@ -39,12 +38,6 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu'
 import { ScrollArea } from '@/shared/ui/scroll-area'
-
-const roleIconMap = {
-  GUEST: null,
-  MODERATOR: <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
-  ADMIN: <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />,
-}
 
 export const ManageMembersModal = () => {
   const { isOpen, onOpen, onClose, type, data } =
@@ -114,15 +107,11 @@ export const ManageMembersModal = () => {
             <div key={member.id} className="flex items-center gap-x-2 mb-6">
               <UserAvatar src={member.profile.imageUrl} />
 
-              <div className="flex flex-col gap-y-1">
-                <div className="text-xs font-semibold flex items-center gap-x-1">
-                  {member.profile.name}
-
-                  {roleIconMap[member.role]}
-                </div>
-
-                <p className="text-xs text-zinc-500">{member.profile.email}</p>
-              </div>
+              <UserDetails
+                name={member.profile.name}
+                email={member.profile.email}
+                role={member.role}
+              />
 
               {server.profileId !== member.profileId &&
                 loadingId !== member.id && (
