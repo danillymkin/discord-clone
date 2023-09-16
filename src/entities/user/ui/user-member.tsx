@@ -1,6 +1,8 @@
+'use client'
+
 import { Member, MemberRole, Profile, Server } from '@prisma/client'
 import { ShieldAlert, ShieldCheck } from 'lucide-react'
-import Link from 'next/link'
+import { useParams, useRouter } from 'next/navigation'
 
 import { cn } from '@/shared/lib/cn'
 
@@ -11,7 +13,6 @@ interface UserMemberProps {
     profile: Profile
   }
   server: Server
-  activeMemberId?: string
 }
 
 const roleIconMap = {
@@ -22,19 +23,21 @@ const roleIconMap = {
   [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />,
 }
 
-export const UserMember = ({
-  member,
-  activeMemberId,
-  server,
-}: UserMemberProps) => {
+export const UserMember = ({ member, server }: UserMemberProps) => {
   const icon = roleIconMap[member.role]
+  const params = useParams()
+  const router = useRouter()
+
+  const onClick = () => {
+    router.push(`/servers/${server.id}/conversations/${member.id}`)
+  }
 
   return (
-    <Link
-      href={`/servers/${server.id}/conversations/${member.id}`}
+    <button
+      onClick={onClick}
       className={cn(
         'group p-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1',
-        activeMemberId === member.id && 'bg-zinc-700/20 dark:bg-zinc-700'
+        params?.memberId === member.id && 'bg-zinc-700/20 dark:bg-zinc-700'
       )}
     >
       <UserAvatar
@@ -45,7 +48,7 @@ export const UserMember = ({
       <p
         className={cn(
           'font-semibold text-sm text-zinc-500 group-hover:text-zinc-600 dark:text-zinc-400 dark:group-hover:text-zinc-300 transition',
-          activeMemberId === member.id &&
+          params?.memberId === member.id &&
             'text-primary dark:text-zinc-200 dark:group-hover:text-white'
         )}
       >
@@ -53,6 +56,6 @@ export const UserMember = ({
       </p>
 
       {icon}
-    </Link>
+    </button>
   )
 }
