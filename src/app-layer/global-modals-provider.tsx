@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { CreateChannelModal } from '@/features/channel/create-channel'
 import { DeleteChannelModal } from '@/features/channel/delete-channel'
+import { EditChannelModal } from '@/features/channel/edit-channel'
 import { ConfigureServerModal } from '@/features/server/configure-server'
 import { CreateServerModal } from '@/features/server/create-server'
 import { DeleteServerModal } from '@/features/server/delete-server'
@@ -63,6 +64,7 @@ export const GlobalModalsProvider = ({
       <LeaveServerModal />
       <DeleteServerModal />
       <DeleteChannelModal />
+      <EditChannelModal />
     </GlobalModalsContext.Provider>
   )
 }
