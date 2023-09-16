@@ -8,10 +8,10 @@ import {
 } from '@/features/channel/create-channel'
 import { DeleteChannelButton } from '@/features/channel/delete-channel'
 import { EditChannelButton } from '@/features/channel/edit-channel'
-import { ConfigureServerButton } from '@/features/server/configure-server'
-import { DeleteServerButton } from '@/features/server/delete-server'
-import { InvitePeopleButton } from '@/features/server/invite-people'
-import { LeaveServerButton } from '@/features/server/leave-server'
+import { ConfigureServerMenuItem } from '@/features/server/configure-server'
+import { DeleteServerMenuItem } from '@/features/server/delete-server'
+import { InvitePeopleMenuItem } from '@/features/server/invite-people'
+import { LeaveServerMenuItem } from '@/features/server/leave-server'
 import { ManageMembersMenuItem } from '@/features/server/manage-members'
 import { ManageMembersButton } from '@/features/server/manage-members/ui/manage-members-button'
 import { ServerSearch } from '@/features/server/server-search'
@@ -104,13 +104,13 @@ export const ServerSidebar = async ({
       <ServerHeader
         serverName={server.name}
         actions={[
-          isModerator && <InvitePeopleButton server={server} />,
-          isAdmin && <ConfigureServerButton server={server} />,
+          isModerator && <InvitePeopleMenuItem server={server} />,
+          isAdmin && <ConfigureServerMenuItem server={server} />,
           isAdmin && <ManageMembersMenuItem server={server} />,
           isModerator && <CreateChannelMenuItem server={server} />,
           isModerator && <DropdownMenuSeparator />,
-          isAdmin && <DeleteServerButton server={server} />,
-          !isAdmin && <LeaveServerButton server={server} />,
+          isAdmin && <DeleteServerMenuItem server={server} />,
+          !isAdmin && <LeaveServerMenuItem server={server} />,
         ]}
       />
 

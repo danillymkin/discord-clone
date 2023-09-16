@@ -1,2 +1,2 @@
-export { ConfigureServerButton } from './ui/configure-server-button'
+export { ConfigureServerMenuItem } from './ui/configure-server-menu-item'
 export { ConfigureServerModal } from './ui/configure-server-modal'

@@ -7,11 +7,11 @@ import { useContext } from 'react'
 import { GlobalModalsContext } from '@/shared/lib/context/global-modals-context'
 import { DropdownMenuItem } from '@/shared/ui/dropdown-menu'
 
-interface DeleteServerButtonProps {
+interface DeleteServerMenuItemProps {
   server: Server
 }
 
-export const DeleteServerButton = ({ server }: DeleteServerButtonProps) => {
+export const DeleteServerMenuItem = ({ server }: DeleteServerMenuItemProps) => {
   const { onOpen } = useContext(GlobalModalsContext)
 
   return (
