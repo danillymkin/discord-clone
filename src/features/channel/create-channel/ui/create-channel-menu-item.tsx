@@ -1,26 +1,28 @@
 'use client'
 
 import { Server } from '@prisma/client'
-import { Trash } from 'lucide-react'
+import { PlusCircle } from 'lucide-react'
 import { useContext } from 'react'
 
 import { GlobalModalsContext } from '@/shared/lib/context/global-modals-context'
 import { DropdownMenuItem } from '@/shared/ui/dropdown-menu'
 
-interface DeleteServerButtonProps {
+interface CreateChannelMenuItemProps {
   server: Server
 }
 
-export const DeleteServerButton = ({ server }: DeleteServerButtonProps) => {
+export const CreateChannelMenuItem = ({
+  server,
+}: CreateChannelMenuItemProps) => {
   const { onOpen } = useContext(GlobalModalsContext)
 
   return (
     <DropdownMenuItem
-      onClick={() => onOpen('deleteServer', { server })}
-      className="text-rose-500 flex items-center px-3 py-2 text-sm cursor-pointer"
+      onClick={() => onOpen('createChannel', { server })}
+      className="flex items-center px-3 py-2 text-sm cursor-pointer"
     >
-      Delete Server
-      <Trash className="h-4 w-4 ml-auto" />
+      Create Channel
+      <PlusCircle className="h-4 w-4 ml-auto" />
     </DropdownMenuItem>
   )
 }

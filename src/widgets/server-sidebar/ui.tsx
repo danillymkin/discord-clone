@@ -2,23 +2,33 @@ import { ChanelType, MemberRole } from '@prisma/client'
 import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
-import { CreateChannelButton } from '@/features/channel/create-channel'
-import { ConfigureServerButton } from '@/features/server/configure-server'
-import { DeleteServerButton } from '@/features/server/delete-server'
-import { InvitePeopleButton } from '@/features/server/invite-people'
-import { LeaveServerButton } from '@/features/server/leave-server'
-import { ManageMembersButton } from '@/features/server/manage-members'
+import {
+  CreateChannelButton,
+  CreateChannelMenuItem,
+} from '@/features/channel/create-channel'
+import { DeleteChannelButton } from '@/features/channel/delete-channel'
+import { EditChannelButton } from '@/features/channel/edit-channel'
+import { ConfigureServerMenuItem } from '@/features/server/configure-server'
+import { DeleteServerMenuItem } from '@/features/server/delete-server'
+import { InvitePeopleMenuItem } from '@/features/server/invite-people'
+import { LeaveServerMenuItem } from '@/features/server/leave-server'
+import { ManageMembersMenuItem } from '@/features/server/manage-members'
+import { ManageMembersButton } from '@/features/server/manage-members/ui/manage-members-button'
 import { ServerSearch } from '@/features/server/server-search'
 
-import { ServerHeader } from '@/entities/server'
-import { currentProfile } from '@/entities/user'
+import { ChannelRow } from '@/entities/channel'
+import { ServerHeader, ServerSection } from '@/entities/server'
+import { UserMember, currentProfile } from '@/entities/user'
 
 import { db } from '@/shared/lib/database'
 import { DropdownMenuSeparator } from '@/shared/ui/dropdown-menu'
 import { ScrollArea } from '@/shared/ui/scroll-area'
+import { Separator } from '@/shared/ui/separator'
 
 interface ServerSidebarProps {
   serverId: string
+  channelId?: string
+  memberId?: string
 }
 
 const channelIconMap = {
@@ -35,7 +45,11 @@ const roleIconMap = {
   [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4 mr-2 text-rose-500" />,
 }
 
-export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
+export const ServerSidebar = async ({
+  serverId,
+  channelId,
+  memberId,
+}: ServerSidebarProps) => {
   const profile = await currentProfile()
 
   if (!profile) {
@@ -90,13 +104,13 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
       <ServerHeader
         serverName={server.name}
         actions={[
-          isModerator && <InvitePeopleButton server={server} />,
-          isAdmin && <ConfigureServerButton server={server} />,
-          isAdmin && <ManageMembersButton server={server} />,
-          isModerator && <CreateChannelButton server={server} />,
+          isModerator && <InvitePeopleMenuItem server={server} />,
+          isAdmin && <ConfigureServerMenuItem server={server} />,
+          isAdmin && <ManageMembersMenuItem server={server} />,
+          isModerator && <CreateChannelMenuItem server={server} />,
           isModerator && <DropdownMenuSeparator />,
-          isAdmin && <DeleteServerButton server={server} />,
-          !isAdmin && <LeaveServerButton server={server} />,
+          isAdmin && <DeleteServerMenuItem server={server} />,
+          !isAdmin && <LeaveServerMenuItem server={server} />,
         ]}
       />
 
@@ -143,6 +157,133 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
             ]}
           />
         </div>
+
+        <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-2" />
+
+        {!!textChannels?.length && (
+          <div className="mb-2">
+            <ServerSection
+              label="Text Channels"
+              actions={
+                isModerator && (
+                  <CreateChannelButton
+                    server={server}
+                    channelType={ChanelType.TEXT}
+                  />
+                )
+              }
+            />
+
+            <div className="space-y-0.5">
+              {textChannels.map((channel) => (
+                <ChannelRow
+                  key={channel.id}
+                  activeChannelId={channelId}
+                  channel={channel}
+                  server={server}
+                  actions={[
+                    isModerator && (
+                      <EditChannelButton server={server} channel={channel} />
+                    ),
+                    isModerator && (
+                      <DeleteChannelButton server={server} channel={channel} />
+                    ),
+                  ]}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {!!audioChannels?.length && (
+          <div className="mb-2">
+            <ServerSection
+              label="Audio Channels"
+              actions={
+                isModerator && (
+                  <CreateChannelButton
+                    server={server}
+                    channelType={ChanelType.AUDIO}
+                  />
+                )
+              }
+            />
+
+            <div className="space-y-0.5">
+              {audioChannels.map((channel) => (
+                <ChannelRow
+                  key={channel.id}
+                  activeChannelId={channelId}
+                  channel={channel}
+                  server={server}
+                  actions={[
+                    isModerator && (
+                      <EditChannelButton server={server} channel={channel} />
+                    ),
+                    isModerator && (
+                      <DeleteChannelButton server={server} channel={channel} />
+                    ),
+                  ]}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {!!videoChannels?.length && (
+          <div className="mb-2">
+            <ServerSection
+              label="Video Channels"
+              actions={
+                isModerator && (
+                  <CreateChannelButton
+                    server={server}
+                    channelType={ChanelType.VIDEO}
+                  />
+                )
+              }
+            />
+
+            <div className="space-y-0.5">
+              {videoChannels.map((channel) => (
+                <ChannelRow
+                  key={channel.id}
+                  activeChannelId={channelId}
+                  channel={channel}
+                  server={server}
+                  actions={[
+                    isModerator && (
+                      <EditChannelButton server={server} channel={channel} />
+                    ),
+                    isModerator && (
+                      <DeleteChannelButton server={server} channel={channel} />
+                    ),
+                  ]}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {!!members?.length && (
+          <div className="mb-2">
+            <ServerSection
+              label="Members"
+              actions={isModerator && <ManageMembersButton server={server} />}
+            />
+
+            <div className="space-y-0.5">
+              {members.map((member) => (
+                <UserMember
+                  key={member.id}
+                  member={member}
+                  server={server}
+                  activeMemberId={memberId}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </ScrollArea>
     </div>
   )

@@ -7,11 +7,11 @@ import { useContext } from 'react'
 import { GlobalModalsContext } from '@/shared/lib/context/global-modals-context'
 import { DropdownMenuItem } from '@/shared/ui/dropdown-menu'
 
-interface InvitePeopleButtonProps {
+interface InvitePeopleMenuItemProps {
   server: Server
 }
 
-export const InvitePeopleButton = ({ server }: InvitePeopleButtonProps) => {
+export const InvitePeopleMenuItem = ({ server }: InvitePeopleMenuItemProps) => {
   const { onOpen } = useContext(GlobalModalsContext)
 
   return (
