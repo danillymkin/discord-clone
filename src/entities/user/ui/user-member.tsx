@@ -1,5 +1,6 @@
-import { Member, MemberRole, Profile } from '@prisma/client'
+import { Member, MemberRole, Profile, Server } from '@prisma/client'
 import { ShieldAlert, ShieldCheck } from 'lucide-react'
+import Link from 'next/link'
 
 import { cn } from '@/shared/lib/cn'
 
@@ -9,6 +10,7 @@ interface UserMemberProps {
   member: Member & {
     profile: Profile
   }
+  server: Server
   activeMemberId?: string
 }
 
@@ -20,11 +22,16 @@ const roleIconMap = {
   [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />,
 }
 
-export const UserMember = ({ member, activeMemberId }: UserMemberProps) => {
+export const UserMember = ({
+  member,
+  activeMemberId,
+  server,
+}: UserMemberProps) => {
   const icon = roleIconMap[member.role]
 
   return (
-    <button
+    <Link
+      href={`/servers/${server.id}/conversations/${member.id}`}
       className={cn(
         'group p-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1',
         activeMemberId === member.id && 'bg-zinc-700/20 dark:bg-zinc-700'
@@ -46,6 +53,6 @@ export const UserMember = ({ member, activeMemberId }: UserMemberProps) => {
       </p>
 
       {icon}
-    </button>
+    </Link>
   )
 }

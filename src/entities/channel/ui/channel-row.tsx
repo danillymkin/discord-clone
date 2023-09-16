@@ -1,10 +1,12 @@
-import { Chanel, ChanelType } from '@prisma/client'
+import { Chanel, ChanelType, Server } from '@prisma/client'
 import { Hash, Lock, Mic, Video } from 'lucide-react'
+import Link from 'next/link'
 
 import { cn } from '@/shared/lib/cn'
 
 interface ChannelRowProps {
   channel: Chanel
+  server: Server
   activeChannelId?: string
   actions?: React.ReactNode | React.ReactNode[]
 }
@@ -17,13 +19,15 @@ const iconMap = {
 
 export const ChannelRow = ({
   channel,
+  server,
   activeChannelId,
   actions,
 }: ChannelRowProps) => {
   const Icon = iconMap[channel.type]
 
   return (
-    <button
+    <Link
+      href={`/servers/${server.id}/channels/${channel.id}`}
       className={cn(
         'group p-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1',
         activeChannelId === channel.id && 'bg-zinc-700/20 dark:bg-zinc-700'
@@ -48,6 +52,6 @@ export const ChannelRow = ({
       {channel.name === 'general' && (
         <Lock className="ml-auto w-4 h-4 text-zinc-500 dark:text-zinc-400" />
       )}
-    </button>
+    </Link>
   )
 }
