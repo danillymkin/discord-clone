@@ -33,10 +33,10 @@ export const UserMember = ({ member, server }: UserMemberProps) => {
   }
 
   return (
-    <button
+    <div
       onClick={onClick}
       className={cn(
-        'group p-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1',
+        'group cursor-pointer p-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1',
         params?.memberId === member.id && 'bg-zinc-700/20 dark:bg-zinc-700'
       )}
     >
@@ -56,6 +56,6 @@ export const UserMember = ({ member, server }: UserMemberProps) => {
       </p>
 
       {icon}
-    </button>
+    </div>
   )
 }
