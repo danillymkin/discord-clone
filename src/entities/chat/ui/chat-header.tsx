@@ -1,5 +1,7 @@
 import { Hash } from 'lucide-react'
 
+import { SocketIndicator } from './socket-indicator'
+
 interface ChatHeaderProps {
   mobileMenu: React.ReactNode
   name: string
@@ -24,6 +26,10 @@ export const ChatHeader = ({
       {type === 'conversation' && avatar}
 
       <p className="font-semibold text-md text-black dark:text-white">{name}</p>
+
+      <div className="ml-auto flex items-center">
+        <SocketIndicator />
+      </div>
     </div>
   )
 }

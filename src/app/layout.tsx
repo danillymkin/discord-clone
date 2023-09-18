@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Open_Sans } from 'next/font/google'
 
 import { GlobalModalsProvider } from '@/app-layer/global-modals-provider'
+import { SocketProvider } from '@/app-layer/socket-provider'
 import { ThemeProvider } from '@/app-layer/theme-provider'
 
 import { cn } from '@/shared/lib/cn'
@@ -31,7 +32,9 @@ export default function RootLayout({
             storageKey="discord-theme"
             enableSystem={false}
           >
-            <GlobalModalsProvider>{children}</GlobalModalsProvider>
+            <SocketProvider>
+              <GlobalModalsProvider>{children}</GlobalModalsProvider>
+            </SocketProvider>
           </ThemeProvider>
         </body>
       </html>
