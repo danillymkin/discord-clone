@@ -45,15 +45,17 @@ enum MemberRole {
 }
 
 model Member {
-  id        String     @id @default(uuid())
-  role      MemberRole @default(GUEST)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  profileId String
-  profile   Profile    @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  serverId  String
-  server    Server     @relation(fields: [serverId], references: [id], onDelete: Cascade)
-  messages  Message[]
+  id                     String         @id @default(uuid())
+  role                   MemberRole     @default(GUEST)
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+  profileId              String
+  profile                Profile        @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  serverId               String
+  server                 Server         @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  messages               Message[]
+  conversationsInitiated Conversation[] @relation("FirstMember")
+  conversationsReceived  Conversation[] @relation("SecondMember")
 
   @@index([profileId])
   @@index([serverId])
@@ -95,4 +97,15 @@ model Message {
 
   @@index([channelId])
   @@index([memberId])
+}
+
+model Conversation {
+  id             String @id @default(uuid())
+  firstMemberId  String
+  firstMember    Member @relation("FirstMember", fields: [firstMemberId], references: [id], onDelete: Cascade)
+  secondMemberId String
+  secondMember   Member @relation("SecondMember", fields: [secondMemberId], references: [id], onDelete: Cascade)
+
+  @@unique([firstMemberId, secondMemberId])
+  @@index([secondMemberId])
 }
