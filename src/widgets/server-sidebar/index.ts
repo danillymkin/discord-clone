@@ -1,1 +1,0 @@
-export { ServerSidebar } from './ui'

@@ -1,7 +1,7 @@
 import { redirectToSignIn } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
 
-import { ServerSidebar } from '@/widgets/server-sidebar'
+import { ServerSidebar } from '@/widgets/sidebar'
 
 import { currentProfile } from '@/entities/user'
 

@@ -27,8 +27,6 @@ import { Separator } from '@/shared/ui/separator'
 
 interface ServerSidebarProps {
   serverId: string
-  channelId?: string
-  memberId?: string
 }
 
 const channelIconMap = {
@@ -45,11 +43,7 @@ const roleIconMap = {
   [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4 mr-2 text-rose-500" />,
 }
 
-export const ServerSidebar = async ({
-  serverId,
-  channelId,
-  memberId,
-}: ServerSidebarProps) => {
+export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   const profile = await currentProfile()
 
   if (!profile) {
@@ -178,7 +172,6 @@ export const ServerSidebar = async ({
               {textChannels.map((channel) => (
                 <ChannelRow
                   key={channel.id}
-                  activeChannelId={channelId}
                   channel={channel}
                   server={server}
                   actions={[
@@ -213,7 +206,6 @@ export const ServerSidebar = async ({
               {audioChannels.map((channel) => (
                 <ChannelRow
                   key={channel.id}
-                  activeChannelId={channelId}
                   channel={channel}
                   server={server}
                   actions={[
@@ -248,7 +240,6 @@ export const ServerSidebar = async ({
               {videoChannels.map((channel) => (
                 <ChannelRow
                   key={channel.id}
-                  activeChannelId={channelId}
                   channel={channel}
                   server={server}
                   actions={[
@@ -274,12 +265,7 @@ export const ServerSidebar = async ({
 
             <div className="space-y-0.5">
               {members.map((member) => (
-                <UserMember
-                  key={member.id}
-                  member={member}
-                  server={server}
-                  activeMemberId={memberId}
-                />
+                <UserMember key={member.id} member={member} server={server} />
               ))}
             </div>
           </div>
