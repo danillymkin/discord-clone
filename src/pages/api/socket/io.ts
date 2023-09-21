@@ -16,6 +16,8 @@ const ioHandler = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
     const httpServer: NetServer = res.socket.server as any
     const io = new ServerIO(httpServer, {
       path,
+      // @ts-ignore
+      addTrailingSlash: false,
     })
     res.socket.server.io = io
   }
