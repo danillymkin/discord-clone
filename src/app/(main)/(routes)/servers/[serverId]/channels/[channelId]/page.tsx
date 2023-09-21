@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation'
 
 import { MobileMenu } from '@/widgets/sidebar'
 
+import { ChatInput } from '@/features/chat/send-message'
+
 import { ChatHeader } from '@/entities/chat'
 import { currentProfile } from '@/entities/user'
 
@@ -45,6 +47,18 @@ const ChannelPage = async ({ params }: ChannelPageProps) => {
         mobileMenu={<MobileMenu serverId={params.serverId} />}
         type="channel"
         name={channel.name}
+      />
+
+      <div className="flex-1">Future Messages</div>
+
+      <ChatInput
+        name={channel.name}
+        type="channel"
+        apiUrl="/api/socket/messages"
+        query={{
+          channelId: channel.id,
+          serverId: channel.serverId,
+        }}
       />
     </div>
   )
