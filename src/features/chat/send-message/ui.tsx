@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
-import { Plus, Smile } from 'lucide-react'
+import { Smile } from 'lucide-react'
 import qs from 'query-string'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -15,6 +15,7 @@ interface ChatInputProps {
   query: Record<string, any>
   name: string
   type: 'conversation' | 'channel'
+  leftSlot?: React.ReactNode
 }
 
 const formSchema = z.object({
@@ -23,7 +24,13 @@ const formSchema = z.object({
 
 type FormSchemaType = z.infer<typeof formSchema>
 
-export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
+export const ChatInput = ({
+  apiUrl,
+  query,
+  name,
+  type,
+  leftSlot,
+}: ChatInputProps) => {
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,12 +63,7 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
             <FormItem>
               <FormControl>
                 <div className="relative p-4 pb-6">
-                  <button
-                    type="button"
-                    className="absolute top-7 left-8 h-6 w-6 bg-zinc-500 dark:bg-zinc-400 hover:bg-zinc-600 dark:hover:bg-zinc-300 transition rounded-full p-1 flex items-center justify-center"
-                  >
-                    <Plus className="text-white dark:text-[#313338]" />
-                  </button>
+                  {leftSlot}
 
                   <Input
                     {...field}

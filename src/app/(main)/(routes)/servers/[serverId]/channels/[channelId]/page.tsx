@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 
 import { MobileMenu } from '@/widgets/sidebar'
 
+import { AttachFileButton } from '@/features/chat/attach-file'
 import { ChatInput } from '@/features/chat/send-message'
 
 import { ChatHeader } from '@/entities/chat'
@@ -41,6 +42,12 @@ const ChannelPage = async ({ params }: ChannelPageProps) => {
     return redirect('/')
   }
 
+  const apiUrl = '/api/socket/messages'
+  const query = {
+    channelId: channel.id,
+    serverId: channel.serverId,
+  }
+
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
       <ChatHeader
@@ -54,11 +61,9 @@ const ChannelPage = async ({ params }: ChannelPageProps) => {
       <ChatInput
         name={channel.name}
         type="channel"
-        apiUrl="/api/socket/messages"
-        query={{
-          channelId: channel.id,
-          serverId: channel.serverId,
-        }}
+        apiUrl={apiUrl}
+        query={query}
+        leftSlot={<AttachFileButton apiUrl={apiUrl} query={query} />}
       />
     </div>
   )
