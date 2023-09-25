@@ -98,13 +98,25 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
       <ServerHeader
         serverName={server.name}
         actions={[
-          isModerator && <InvitePeopleMenuItem server={server} />,
-          isAdmin && <ConfigureServerMenuItem server={server} />,
-          isAdmin && <ManageMembersMenuItem server={server} />,
-          isModerator && <CreateChannelMenuItem server={server} />,
-          isModerator && <DropdownMenuSeparator />,
-          isAdmin && <DeleteServerMenuItem server={server} />,
-          !isAdmin && <LeaveServerMenuItem server={server} />,
+          isModerator && (
+            <InvitePeopleMenuItem server={server} key={'invite-people'} />
+          ),
+          isAdmin && (
+            <ConfigureServerMenuItem server={server} key={'configure-server'} />
+          ),
+          isAdmin && (
+            <ManageMembersMenuItem server={server} key={'manage-members'} />
+          ),
+          isModerator && (
+            <CreateChannelMenuItem server={server} key={'create-channel'} />
+          ),
+          isModerator && <DropdownMenuSeparator key={'separator'} />,
+          isAdmin && (
+            <DeleteServerMenuItem server={server} key={'delete-server'} />
+          ),
+          !isAdmin && (
+            <LeaveServerMenuItem server={server} key={'leave-server'} />
+          ),
         ]}
       />
 
