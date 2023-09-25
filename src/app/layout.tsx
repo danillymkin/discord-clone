@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Open_Sans } from 'next/font/google'
 
 import { GlobalModalsProvider } from '@/app-layer/global-modals-provider'
+import { QueryProvider } from '@/app-layer/query-provider'
 import { SocketProvider } from '@/app-layer/socket-provider'
 import { ThemeProvider } from '@/app-layer/theme-provider'
 
@@ -33,7 +34,9 @@ export default function RootLayout({
             enableSystem={false}
           >
             <SocketProvider>
-              <GlobalModalsProvider>{children}</GlobalModalsProvider>
+              <GlobalModalsProvider>
+                <QueryProvider>{children}</QueryProvider>
+              </GlobalModalsProvider>
             </SocketProvider>
           </ThemeProvider>
         </body>
