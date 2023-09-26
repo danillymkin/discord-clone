@@ -1,7 +1,6 @@
 'use client'
 
 import { Member } from '@prisma/client'
-import { format } from 'date-fns'
 import { Loader2, ServerCrash } from 'lucide-react'
 import { Fragment } from 'react'
 
@@ -18,6 +17,7 @@ import { UserAvatar } from '@/entities/user'
 import { MessageWithMemberWithProfile } from '@/shared/lib/types'
 
 import { useChatQuery } from '../model/use-chat-query'
+import { useChatSocket } from '../model/use-chat-socket'
 import { ChatWelcome } from './chat-welcome'
 
 interface ChatMassegesProps {
@@ -45,6 +45,8 @@ export const ChatMasseges = ({
 }: ChatMassegesProps) => {
   const { editingMessageId } = useEditMessage()
   const queryKey = `chat:${chatId}`
+  const addKey = `chat:${chatId}:messages`
+  const updateKey = `chat:${chatId}:messages:update`
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
@@ -53,6 +55,8 @@ export const ChatMasseges = ({
       paramKey,
       paramValue,
     })
+
+  useChatSocket({ queryKey, addKey, updateKey })
 
   if (status === 'loading') {
     return (
