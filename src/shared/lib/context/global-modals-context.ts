@@ -12,6 +12,7 @@ export type ModalType =
   | 'deleteChannel'
   | 'editChannel'
   | 'messageFile'
+  | 'deleteMessage'
 
 export type ModalData = {
   server?: Server

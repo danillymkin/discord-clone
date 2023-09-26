@@ -6,6 +6,7 @@ import { CreateChannelModal } from '@/features/channel/create-channel'
 import { DeleteChannelModal } from '@/features/channel/delete-channel'
 import { EditChannelModal } from '@/features/channel/edit-channel'
 import { AttachFileModal } from '@/features/chat/attach-file'
+import { DeleteMessageModal } from '@/features/chat/delete-message'
 import { ConfigureServerModal } from '@/features/server/configure-server'
 import { CreateServerModal } from '@/features/server/create-server'
 import { DeleteServerModal } from '@/features/server/delete-server'
@@ -67,6 +68,7 @@ export const GlobalModalsProvider = ({
       <DeleteChannelModal />
       <EditChannelModal />
       <AttachFileModal />
+      <DeleteMessageModal />
     </GlobalModalsContext.Provider>
   )
 }
