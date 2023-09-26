@@ -1,6 +1,7 @@
 import { redirectToSignIn } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
 
+import { ChatMasseges } from '@/widgets/chat-messages'
 import { MobileMenu } from '@/widgets/sidebar'
 
 import { AttachFileButton } from '@/features/chat/attach-file'
@@ -42,7 +43,7 @@ const ChannelPage = async ({ params }: ChannelPageProps) => {
     return redirect('/')
   }
 
-  const apiUrl = '/api/socket/messages'
+  const socketUrl = '/api/socket/messages'
   const query = {
     channelId: channel.id,
     serverId: channel.serverId,
@@ -56,14 +57,24 @@ const ChannelPage = async ({ params }: ChannelPageProps) => {
         name={channel.name}
       />
 
-      <div className="flex-1">Future Messages</div>
+      <ChatMasseges
+        name={channel.name}
+        chatId={channel.id}
+        member={member}
+        type="channel"
+        apiUrl="/api/messages"
+        socketUrl={socketUrl}
+        socketQuery={query}
+        paramKey="channelId"
+        paramValue={channel.id}
+      />
 
       <ChatInput
         name={channel.name}
         type="channel"
-        apiUrl={apiUrl}
+        apiUrl={socketUrl}
         query={query}
-        leftSlot={<AttachFileButton apiUrl={apiUrl} query={query} />}
+        leftSlot={<AttachFileButton apiUrl={socketUrl} query={query} />}
       />
     </div>
   )
