@@ -49,7 +49,7 @@ const ConversationPage = async ({ params }: ConversationPageProps) => {
   const { firstMember, secondMember } = conversation
 
   const otherMember =
-    secondMember.profileId === profile.id ? secondMember : firstMember
+    firstMember.profileId === profile.id ? secondMember : firstMember
 
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
