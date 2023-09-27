@@ -29,15 +29,15 @@ export default async function handler(
     }
 
     if (!serverId) {
-      return res.status(401).json({ error: 'Server ID missing' })
+      return res.status(400).json({ error: 'Server ID missing' })
     }
 
     if (!channelId) {
-      return res.status(401).json({ error: 'Channel ID missing' })
+      return res.status(400).json({ error: 'Channel ID missing' })
     }
 
     if (!content) {
-      return res.status(401).json({ error: 'Content missing' })
+      return res.status(400).json({ error: 'Content missing' })
     }
 
     const server = await db.server.findFirst({
