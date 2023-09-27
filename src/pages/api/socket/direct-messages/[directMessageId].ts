@@ -23,61 +23,63 @@ export default async function handler(
     })
 
     const { content } = req.body
-    const { serverId, channelId, messageId } = req.query
+    const { conversationId, directMessageId } = req.query
 
     if (!profile) {
       return res.status(400).json({ error: 'Unauthorized' })
     }
 
-    if (!serverId) {
-      return res.status(400).json({ error: 'Server ID missing' })
+    if (!conversationId) {
+      return res.status(400).json({ error: 'ConversationId ID missing' })
     }
 
-    if (!channelId) {
-      return res.status(400).json({ error: 'Channel ID missing' })
-    }
-
-    const server = await db.server.findFirst({
+    const conversation = await db.conversation.findFirst({
       where: {
-        id: serverId as string,
-        members: {
-          some: {
-            profileId: profile.id,
+        id: conversationId as string,
+        OR: [
+          {
+            firstMember: {
+              profileId: profile.id,
+            },
+          },
+          {
+            secondMember: {
+              profileId: profile.id,
+            },
+          },
+        ],
+      },
+      include: {
+        firstMember: {
+          include: {
+            profile: true,
+          },
+        },
+        secondMember: {
+          include: {
+            profile: true,
           },
         },
       },
-      include: {
-        members: true,
-      },
     })
 
-    if (!server) {
-      return res.status(404).json({ message: 'Server not found' })
+    if (!conversation) {
+      return res.status(404).json({ message: 'Conversation not found' })
     }
 
-    const channel = await db.chanel.findFirst({
-      where: {
-        id: channelId as string,
-        serverId: serverId as string,
-      },
-    })
-
-    if (!channel) {
-      return res.status(404).json({ message: 'Channel not found' })
-    }
-
-    const member = server.members.find(
-      (member) => member.profileId === profile.id
-    )
+    const member =
+      conversation.firstMember.profileId === profile.id
+        ? conversation.firstMember
+        : conversation.secondMember
 
     if (!member) {
       return res.status(404).json({ message: 'Member not found' })
     }
 
-    let message = await db.message.findFirst({
+    let message = await db.directMessage.findFirst({
       where: {
-        id: messageId as string,
-        channelId: channelId as string,
+        id: directMessageId as string,
+        conversationId: conversationId as string,
       },
       include: {
         member: {
@@ -102,9 +104,9 @@ export default async function handler(
     }
 
     if (req.method === 'DELETE') {
-      message = await db.message.update({
+      message = await db.directMessage.update({
         where: {
-          id: messageId as string,
+          id: directMessageId as string,
         },
         data: {
           fileUrl: null,
@@ -126,9 +128,9 @@ export default async function handler(
         return res.status(401).json({ error: 'Unauthorized' })
       }
 
-      message = await db.message.update({
+      message = await db.directMessage.update({
         where: {
-          id: messageId as string,
+          id: directMessageId as string,
         },
         data: {
           content,
@@ -143,7 +145,7 @@ export default async function handler(
       })
     }
 
-    const updateKey = `chat:${channelId}:messages:update`
+    const updateKey = `chat:${conversationId}:messages:update`
 
     res?.socket?.server?.io?.emit(updateKey, message)
 
