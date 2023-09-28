@@ -6,7 +6,9 @@ import { MobileMenu } from '@/widgets/sidebar'
 
 import { AttachFileButton } from '@/features/chat/attach-file'
 import { ChatInput } from '@/features/chat/send-message'
+import { VideoCall } from '@/features/chat/video-call'
 
+import { MediaRoom } from '@/entities/channel/ui/media-room'
 import { ChatHeader } from '@/entities/chat'
 import { findOrCreateConversation } from '@/entities/conversation'
 import { UserAvatar, currentProfile } from '@/entities/user'
@@ -18,9 +20,15 @@ interface ConversationPageProps {
     serverId: string
     memberId: string
   }
+  searchParams: {
+    video?: boolean
+  }
 }
 
-const ConversationPage = async ({ params }: ConversationPageProps) => {
+const ConversationPage = async ({
+  params,
+  searchParams,
+}: ConversationPageProps) => {
   const profile = await currentProfile()
 
   if (!profile) {
@@ -72,27 +80,36 @@ const ConversationPage = async ({ params }: ConversationPageProps) => {
             className="h-8 w-8 md:h-8 md:w-8 mr-2"
           />
         }
+        action={<VideoCall />}
       />
 
-      <ChatMasseges
-        name={otherMember.profile.name}
-        chatId={conversation.id}
-        member={currentMember}
-        type="conversation"
-        apiUrl="/api/direct-messages"
-        socketUrl={socketUrl}
-        socketQuery={query}
-        paramKey="conversationId"
-        paramValue={conversation.id}
-      />
+      {searchParams.video && (
+        <MediaRoom chatId={conversation.id} video={true} audio={true} />
+      )}
 
-      <ChatInput
-        name={otherMember.profile.name}
-        type="conversation"
-        apiUrl={socketUrl}
-        query={query}
-        leftSlot={<AttachFileButton apiUrl={socketUrl} query={query} />}
-      />
+      {!searchParams.video && (
+        <>
+          <ChatMasseges
+            name={otherMember.profile.name}
+            chatId={conversation.id}
+            member={currentMember}
+            type="conversation"
+            apiUrl="/api/direct-messages"
+            socketUrl={socketUrl}
+            socketQuery={query}
+            paramKey="conversationId"
+            paramValue={conversation.id}
+          />
+
+          <ChatInput
+            name={otherMember.profile.name}
+            type="conversation"
+            apiUrl={socketUrl}
+            query={query}
+            leftSlot={<AttachFileButton apiUrl={socketUrl} query={query} />}
+          />
+        </>
+      )}
     </div>
   )
 }
